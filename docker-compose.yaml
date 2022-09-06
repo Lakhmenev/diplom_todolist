@@ -3,6 +3,7 @@ version: '3.9'
 services:
 
   postgres:
+
     image: postgres:14.0-alpine
     restart: always
     env_file:
@@ -19,20 +20,20 @@ services:
     networks:
       - backend_nw
 
-#  migrations:
-#    build:
-#      context: .
-#    env_file:
-#      - .env
-#    environment:
-#      POSTGRES_HOST: postgres
-#    depends_on:
-#      postgres:
-#        condition: service_healthy
-#    command: >
-#      sh -c "python manage.py migrate"
-#    networks:
-#      - backend_nw
+  migrations:
+    build:
+      context: .
+    env_file:
+      - sources/.env
+    environment:
+      POSTGRES_HOST: postgres
+    depends_on:
+      postgres:
+        condition: service_healthy
+    command: >
+      sh -c 'python3 manage.py migrate'
+    networks:
+      - backend_nw
 
 volumes:
   pg_data_todolist:

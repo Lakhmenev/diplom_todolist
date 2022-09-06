@@ -35,11 +35,11 @@ class UserAdmin(BaseUserAdmin):
         )
     )
 
-    def get_list_display(self, request):
-        default_list_display = super(UserAdmin, self).get_list_display(request)
-        if request.user.is_superuser:
-            default_list_display = ('username', 'email', 'last_name', 'first_name', 'password')
-        return default_list_display
+    # def get_list_display(self, request):
+    #     default_list_display = super(UserAdmin, self).get_list_display(request)
+    #     if request.user.is_superuser:
+    #         default_list_display = ('username', 'email', 'last_name', 'first_name', 'password')
+    #     return default_list_display
 
 
 # Меняем заголовок админки
