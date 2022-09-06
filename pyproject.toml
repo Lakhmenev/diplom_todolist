@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "diplom-todolist"
+version = "0.1.0"
+description = "Дипломный проект"
+authors = ["Dmitriy Lahmenev <lahmenev@gmail.com>"]
+readme = "README.md"
+packages = [{include = "diplom_todolist"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+Django = "^4.1.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
