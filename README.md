@@ -36,4 +36,4 @@
 10. Запускаем проект (**python manage.py runserver**)
 
 :hammer:
-20:10
+36:43
