@@ -9,8 +9,28 @@ packages = [{include = "diplom_todolist"}]
 [tool.poetry.dependencies]
 python = "^3.10"
 Django = "^4.1.1"
+django-environ = "^0.9.0"
+psycopg2-binary = "^2.9.3"
 
+
+[tool.poetry.group.dev.dependencies]
+pre-commit = "^2.20.0"
 
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+
+[tools.isort]
+py_version = 310
+profile = 'django'
+line_length =120 # длина строики
+multi_line_output = 2 # отступ между классами
+known_first_party = ['todolist_project', 'core'] # наши написанные приложения  для проверки
+
+
+[tool.flake8]
+max-line-length = 120
+per-file-ignores = """
+    */migrations/*: E501,
+"""
