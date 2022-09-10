@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
 from pathlib import Path
-
+import os
 import environ
 
 env = environ.Env(
@@ -128,7 +128,8 @@ AUTH_USER_MODEL = 'core.User'
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
 STATIC_URL = 'static/'
-STATIC_ROOT = BASE_DIR.parent.joinpath('static')
+# STATIC_ROOT = BASE_DIR.parent.joinpath('deploy', 'nginx', 'static')
+STATIC_ROOT = os.path.join(BASE_DIR, "static")
 
 
 # Default primary key field type
