@@ -1,6 +1,5 @@
-from rest_framework import generics
-
 from core.serializers import CreateUserSerializer
+from rest_framework import generics
 
 
 class SignupView(generics.CreateAPIView):
@@ -11,4 +10,3 @@ class SignupView(generics.CreateAPIView):
 #     serializer_class = LoginSerializer
 
     # def post
-
