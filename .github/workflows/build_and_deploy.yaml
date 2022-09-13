@@ -43,7 +43,7 @@ jobs:
           printf "\nDOCKER_HUB_USERNAME=${{ secrets.DOCKER_HUB_USERNAME }}" >> deploy/.env
       - name: Collect Static
         run: |
-          cd deploy/.env .env
+          cp deploy/.env .env
           docker run \
             --user 0 \
             --rm \
