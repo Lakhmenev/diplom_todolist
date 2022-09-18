@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'social_django',
     'core',
+    'goals',
 ]
 
 MIDDLEWARE = [
@@ -205,10 +206,14 @@ SOCIAL_AUTH_VK_OAUTH2_KEY = env.str('VK_OAUTH2_KEY')
 SOCIAL_AUTH_VK_OAUTH2_SECRET = env.str('VK_OAUTH2_SECRET')
 
 SOCIAL_AUTH_URL_NAMESPACE = 'social'
-SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/'
 
 SOCIAL_AUTH_VK_OAUTH2_SCOPE = ['email']
 SOCIAL_AUTH_VK_EXTRA_DATA = [('email', 'email')]
+
+# SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/'
+SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/logged-in/'
+SOCIAL_AUTH_LOGIN_ERROR_URL = '/login-error/'
+
 
 AUTHENTICATION_BACKENDS = (
     'social_core.backends.vk.VKOAuth2',  # авторизации через ВКонтакте
