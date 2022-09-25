@@ -3,10 +3,8 @@ from django_filters.rest_framework import DjangoFilterBackend
 from goals.filters import GoalDateFilter
 from goals.models import Goal, GoalCategory, GoalComment
 from goals.permissions import IsOwnerOrReadOnly
-from goals.serializers import (GoalCategoryCreateSerializer,
-                               GoalCategorySerializer,
-                               GoalCommentCreateSerializer,
-                               GoalCommentSerializer, GoalSerializer)
+from goals.serializers import GoalCategoryCreateSerializer, GoalCategorySerializer, GoalCommentCreateSerializer, \
+    GoalCommentSerializer, GoalSerializer
 from rest_framework import filters, generics, permissions
 
 
@@ -38,7 +36,7 @@ class GoalCategoryView(generics.RetrieveUpdateDestroyAPIView):
 
     def perform_destroy(self, instance: GoalCategory):
         instance.is_deleted = True
-        instance.save(update_fields='is_deleted')
+        instance.save(update_fields=('is_deleted',))
         return instance
 
 
