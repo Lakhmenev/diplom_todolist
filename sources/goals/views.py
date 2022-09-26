@@ -3,8 +3,11 @@ from django_filters.rest_framework import DjangoFilterBackend
 from goals.filters import GoalDateFilter
 from goals.models import Goal, GoalCategory, GoalComment
 from goals.permissions import IsOwnerOrReadOnly
-from goals.serializers import GoalCategoryCreateSerializer, GoalCategorySerializer, GoalCommentCreateSerializer, \
-    GoalCommentSerializer, GoalSerializer
+from goals.serializers import (GoalCategoryCreateSerializer,
+                               GoalCategorySerializer,
+                               GoalCommentCreateSerializer,
+                               GoalCommentSerializer, GoalCreateSerializer,
+                               GoalSerializer)
 from rest_framework import filters, generics, permissions
 
 
@@ -42,7 +45,7 @@ class GoalCategoryView(generics.RetrieveUpdateDestroyAPIView):
 
 class GoalCreateView(generics.CreateAPIView):
     permission_classes = [permissions.IsAuthenticated]
-    serializer_class = GoalCategorySerializer
+    serializer_class = GoalCreateSerializer
 
 
 class GoalListView(generics.ListAPIView):
