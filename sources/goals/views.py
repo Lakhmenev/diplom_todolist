@@ -11,6 +11,10 @@ from goals.serializers import (GoalCategoryCreateSerializer,
 from rest_framework import filters, generics, permissions
 
 
+class BoardCreateView(generics.CreateAPIView):
+    ...
+
+
 class GoalCategoryCreateView(generics.CreateAPIView):
     permission_classes = [permissions.IsAuthenticated]
     serializer_class = GoalCategoryCreateSerializer
