@@ -1,4 +1,5 @@
-from goals.models import BoardParticipant, Goal, GoalCategory, Board, GoalComment
+from goals.models import (Board, BoardParticipant, Goal, GoalCategory,
+                          GoalComment)
 from rest_framework import permissions
 from rest_framework.permissions import IsAuthenticated
 
