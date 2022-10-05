@@ -2,14 +2,16 @@ from django.db import transaction
 from django.db.models import Q
 from django_filters.rest_framework import DjangoFilterBackend
 from goals.filters import GoalDateFilter
-from goals.models import Goal, GoalCategory, GoalComment, Board
-from goals.permissions import IsOwnerOrReadOnly, BoardPermission, GoalCategoryPermissions, GoalPermissions, \
-    CommentsPermissions
-from goals.serializers import (GoalCategoryCreateSerializer,
+from goals.models import Board, Goal, GoalCategory, GoalComment
+from goals.permissions import (BoardPermission, CommentsPermissions,
+                               GoalCategoryPermissions, GoalPermissions,
+                               IsOwnerOrReadOnly)
+from goals.serializers import (BoardCreateSerializer, BoardListSerializer,
+                               BoardSerializer, GoalCategoryCreateSerializer,
                                GoalCategorySerializer,
                                GoalCommentCreateSerializer,
                                GoalCommentSerializer, GoalCreateSerializer,
-                               GoalSerializer, BoardCreateSerializer, BoardListSerializer, BoardSerializer)
+                               GoalSerializer)
 from rest_framework import filters, generics, permissions
 
 
@@ -25,7 +27,7 @@ class BoardListView(generics.ListAPIView):
     ordering = ['title']
 
     def get_queryset(self):
-        return Board.objects.filter(participants__user_id=self.request.user_id, is_deleted=False)
+        return Board.objects.filter(participants__user_id=self.request.user.id, is_deleted=False)
 
 
 class BoardView(generics.RetrieveUpdateDestroyAPIView):
@@ -35,7 +37,7 @@ class BoardView(generics.RetrieveUpdateDestroyAPIView):
 
     def get_queryset(self):
         return Board.objects.prefetch_related('participants').filter(
-            participants__user_id=self.request.user_id,
+            participants__user_id=self.request.user.id,
             is_deleted=False
         )
 
@@ -78,7 +80,7 @@ class GoalCategoryView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = GoalCategorySerializer
 
     def get_queryset(self):
-        return GoalCategory.objects.prefetch_related('participants').filter(
+        return GoalCategory.objects.prefetch_related('board__participants').filter(
             board__participants__user_id=self.request.user.id,
             is_deleted=False
         )
