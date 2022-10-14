@@ -214,6 +214,7 @@ SOCIAL_AUTH_VK_EXTRA_DATA = [('email', 'email')]
 SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/logged-in/'
 SOCIAL_AUTH_LOGIN_ERROR_URL = '/login-error/'
 
+BOT_TOKEN = env.str('BOT_TOKEN')
 
 AUTHENTICATION_BACKENDS = (
     'social_core.backends.vk.VKOAuth2',  # авторизации через ВКонтакте
