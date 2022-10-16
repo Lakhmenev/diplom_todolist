@@ -18,7 +18,7 @@ class Chat(BaseModel):
 
 
 class Message(BaseModel):
-    massage_id: int
+    message_id: int
     from_: MessageFrom = Field(..., alias='from')
     chat: Chat
     text: str | None = None
