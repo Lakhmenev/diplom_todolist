@@ -1,9 +1,8 @@
 from typing import Any
 
+from bot.models import TgUser
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
-
-from bot.models import TgUser
 
 
 class TgUserSerializer(serializers.ModelSerializer):
@@ -12,7 +11,7 @@ class TgUserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = TgUser
-        fields = ('tg_id', 'username', 'user_id')
+        fields = ('tg_id', 'username', 'verification_code', 'user_id')
         read_only_fields = ('tg_id', 'username', 'user_id')
 
     def validate(self, attrs: dict[str, Any]):

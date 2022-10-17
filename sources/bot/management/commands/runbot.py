@@ -2,9 +2,8 @@ import os
 
 from bot.models import TgUser
 from bot.tg.client import TgClient
-from django.core.management import BaseCommand
-
 from bot.tg.models import Message
+from django.core.management import BaseCommand
 from todolist import settings
 
 
@@ -51,4 +50,3 @@ class Command(BaseCommand):
             for item in res.result:
                 offset = item.update_id + 1
                 self.handle_message(msg=item.message)
-
