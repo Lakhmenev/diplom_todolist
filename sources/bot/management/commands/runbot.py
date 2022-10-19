@@ -1,5 +1,6 @@
 import logging
 import os
+from datetime import datetime
 from enum import IntEnum, auto
 
 from bot.models import TgUser
@@ -17,6 +18,10 @@ logger = logging.getLogger(__name__)
 class NewGoal(BaseModel):
     cat_id: int | None = None
     goal_title: str | None = None
+
+    @property
+    def is_completed(self) -> bool:
+        return None not in [self.cat_id, self.goal_title]
 
 
 class StateEnum(IntEnum):
@@ -82,12 +87,28 @@ class Command(BaseCommand):
         else:
             self.tg_client.send_message(msg.chat.id, '[Invalid category id]')
 
+    def handle_save_new_category(self, msg: Message, tg_user: TgUser):
+        goal = NewGoal(**self.storage.get_data(tg_user.chat_id))
+        goal.goal_title = msg.text
+        if goal.is_completed:
+            Goal.objects.create(
+                title=goal.goal_title,
+                category=goal.cat_id,
+                user_id=tg_user.user_id,
+                due_date=datetime.now()
+            )
+            self.tg_client.send_message(msg.chat.id, '[New goal created]')
+        else:
+            self.tg_client.send_message(msg.chat.id, '[Something went wrong]')
+
+        self.storage.reset(tg_user.chat_id)
+
     def handle_verified_user(self, msg: Message, tg_user: TgUser):
         if msg.text == '/goals':
             self.handle_goals_list(msg, tg_user)
         elif msg.text == '/create':
             self.handle_goals_categories_list(msg, tg_user)
-            self.storage.set_state(msg.chat.id, state=StateEnum.CHOSEN_CATEGORY)
+            self.storage.set_state(msg.chat.id, state=StateEnum.CREATE_CATEGORY_SELECT)
             self.storage.set_data(msg.chat.id, data=NewGoal().dict())
 
         elif msg.text == '/cancel' and self.storage.get_state(tg_user.chat_id):
@@ -99,9 +120,9 @@ class Command(BaseCommand):
                 case StateEnum.CREATE_CATEGORY_SELECT:
                     self.handle_save_selected_category(msg, tg_user)
                 case StateEnum.CHOSEN_CATEGORY:
-                    ...
+                    self.handle_save_new_category(msg, tg_user)
                 case _:
-                    logger.debug('Invalid state: %s', state)
+                    logger.warning('Invalid state: %s', state)
 
         elif msg.text.startswith('/'):
             self.tg_client.send_message(msg.chat.id, '[unknown command]')
