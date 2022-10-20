@@ -8,7 +8,7 @@ from bot.tg.client import TgClient
 from bot.tg.fsm.memory_storage import MemoryStorage
 from bot.tg.models import Message
 from django.core.management import BaseCommand
-from goals.models import Goal, GoalCategory
+from goals.models import BoardParticipant, Goal, GoalCategory
 from pydantic import BaseModel
 from todolist import settings
 
@@ -76,6 +76,7 @@ class Command(BaseCommand):
             cat_id = int(msg.text)
             if GoalCategory.objects.filter(
                 board__participants__user_id=tg_user.user_id,
+                board__participants__role__in=[BoardParticipant.Role.owner, BoardParticipant.Role.writer],
                 is_deleted=False,
                 id=cat_id
             ).exists():
