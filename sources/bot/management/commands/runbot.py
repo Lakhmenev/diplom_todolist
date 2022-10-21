@@ -73,14 +73,14 @@ class Command(BaseCommand):
 
     def handle_save_selected_category(self, msg: Message, tg_user: TgUser):
         if msg.text.isdigit():
-            cat_id = int(msg.text)
+            bot_cat_id = int(msg.text)
             if GoalCategory.objects.filter(
                 board__participants__user_id=tg_user.user_id,
                 board__participants__role__in=[BoardParticipant.Role.owner, BoardParticipant.Role.writer],
                 is_deleted=False,
-                id=cat_id
+                id=bot_cat_id
             ).exists():
-                self.storage.update_data(chat_id=msg.chat.id, cat_id=cat_id)
+                self.storage.update_data(chat_id=msg.chat.id, cat_id=bot_cat_id)
                 self.tg_client.send_message(msg.chat.id, '[set title]')
                 self.storage.set_state(msg.chat.id, state=StateEnum.CHOSEN_CATEGORY)
             else:
