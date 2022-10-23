@@ -45,9 +45,9 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
+    'django.contrib.contenttypes',
     'django.contrib.admin',
     'django.contrib.auth',
-    'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
@@ -124,7 +124,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'ru-RU'  # "en-us"
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Yekaterinburg'
 
 USE_I18N = True
 
@@ -214,7 +214,7 @@ SOCIAL_AUTH_VK_EXTRA_DATA = [('email', 'email')]
 SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/logged-in/'
 SOCIAL_AUTH_LOGIN_ERROR_URL = '/login-error/'
 
-BOT_TOKEN = env.str('BOT_TOKEN')
+BOT_TOKEN = env.str('BOT_TOKEN', default='')
 
 AUTHENTICATION_BACKENDS = (
     'social_core.backends.vk.VKOAuth2',  # авторизации через ВКонтакте
