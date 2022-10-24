@@ -105,7 +105,6 @@ class BoardListTestCase(APITestCase):
             Board(title='board_1'),
             Board(title='board_2'),
         ])
-        # boards.append(Board.objects.create(title='board_4', is_deleted=True))
 
         BoardParticipant.objects.bulk_create([
             BoardParticipant(board=board, user=user)
@@ -129,8 +128,6 @@ class BoardListTestCase(APITestCase):
         self.client.force_login(user)
 
         response = self.client.get(reverse('list-boards'))
-        self.assertEqual(Board.objects.count(), 0)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-
-
-# https://texnoit.com/test-django
+        board_list = response.json()
+        self.assertListEqual(board_list, [])
