@@ -1,7 +1,7 @@
 from core.models import User
 from django.urls import reverse
 from django.utils import timezone
-from goals.models import Board, BoardParticipant
+from goals.models import Board, BoardParticipant, GoalCategory
 from parameterized import parameterized
 from rest_framework import status
 from rest_framework.test import APITestCase
@@ -131,3 +131,33 @@ class BoardListTestCase(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         board_list = response.json()
         self.assertListEqual(board_list, [])
+
+
+class CategoryTestCase(APITestCase):
+
+    def setUp(self) -> None:
+        self.user = User.objects.create_user(
+            username='test_user',
+            password='test_password'
+        )
+        self.board = Board.objects.create(title='board_title')
+        BoardParticipant.objects.create(board=self.board, user=self.user, role=BoardParticipant.Role.owner)
+
+    def test_create_category(self):
+        url = reverse('create-category')
+        self.client.force_login(self.user)
+        response = self.client.post(url, {'title': 'category title', 'is_deleted': False, 'board': self.board.id})
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+        new_category: GoalCategory = GoalCategory.objects.last()
+        self.assertDictEqual(
+            response.json(),
+            {
+                'id': new_category.id,
+                'created': timezone.localtime(new_category.created).isoformat(),
+                'updated': timezone.localtime(new_category.updated).isoformat(),
+                'title': 'category title',
+                'is_deleted': False,
+                'board': new_category.board.id,
+            }
+        )
